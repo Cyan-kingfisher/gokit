@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.usve.dao.mapper.FollowPoMapper">
+  <resultMap id="BaseResultMap" type="org.example.usve.model.po.FollowPo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="follow_forward" jdbcType="VARCHAR" property="followForward" />
+    <result column="follow_back" jdbcType="VARCHAR" property="followBack" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="selectFollowBack" resultType="java.lang.Integer">
+    SELECT
+      COUNT(0)
+    FROM
+      usve_follow
+    WHERE
+      1=1 <include refid="count_condition"/>;
+  </select>
+  <sql id="count_condition">
+    <if test='forward!=null'>
+      AND usve_follow.follow_forward = #{forward}
+    </if>
+    <if test='back!=null'>
+      AND usve_follow.follow_back = #{back}
+    </if>
+  </sql>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.reip.dao.mapper.CommentPoMapper">
+  <resultMap id="BaseResultMap" type="org.example.reip.model.po.CommentPo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="comment_type" jdbcType="TINYINT" property="commentType" />
+    <result column="comment_root_id" jdbcType="INTEGER" property="commentRootId" />
+    <result column="comment_type_id" jdbcType="INTEGER" property="commentTypeId" />
+    <result column="comment_thumb" jdbcType="INTEGER" property="commentThumb" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="comment_text" jdbcType="LONGVARCHAR" property="commentText" />
+  </resultMap>
+</mapper>

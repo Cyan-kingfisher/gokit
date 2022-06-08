@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mall.dao.mapper.CargoSonPoMapper">
+  <resultMap id="BaseResultMap" type="org.example.mall.model.po.CargoSonPo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="cargo_son_id" jdbcType="INTEGER" property="cargoSonId" />
+    <id column="cargo_id" jdbcType="BIGINT" property="cargoId" />
+    <result column="cargo_son_name" jdbcType="VARCHAR" property="cargoSonName" />
+    <result column="cargo_son_price" jdbcType="DECIMAL" property="cargoSonPrice" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>

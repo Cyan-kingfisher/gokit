@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.usve.dao.mapper.UserPoMapper">
+  <resultMap id="BaseResultMap" type="org.example.usve.model.po.UserPo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_birth" jdbcType="VARCHAR" property="userBirth" />
+    <result column="user_sex" jdbcType="VARCHAR" property="userSex" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="user_occp" jdbcType="VARCHAR" property="userOccp" />
+    <result column="user_home" jdbcType="VARCHAR" property="userHome" />
+    <result column="user_permanent_residence" jdbcType="VARCHAR" property="userPermanentResidence" />
+    <result column="user_order" jdbcType="INTEGER" property="userOrder" />
+    <result column="user_text" jdbcType="LONGVARCHAR" property="userText" />
+  </resultMap>
+  <resultMap id="user_simple" type="org.example.usve.model.dto.UserDto">
+    <id column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
+  </resultMap>
+
+  <update id="updateOne" parameterType="org.example.usve.model.vo.UserVo">
+    <if test='vo!=null'>
+      UPDATE usve_user
+      SET <include refid="upOne"/>
+      WHERE user_phone=#{vo.phone}
+    </if>
+  </update>
+
+  <sql id="upOne">
+    <trim prefix="" suffix="" suffixOverrides="," prefixOverrides="">
+      <if test='vo.avatar!=null'>
+        user_avatar=#{vo.avatar},
+      </if>
+      <if test='vo.username!=null'>
+        user_name=#{vo.username},
+      </if>
+      <if test='vo.sex!=null'>
+        user_sex=#{vo.sex},
+      </if>
+      <if test='vo.occp!=null'>
+        user_occp=#{vo.occp},
+      </if>
+      <if test='vo.home!=null'>
+        user_home=#{vo.home},
+      </if>
+      <if test='vo.permanentResidence!=null'>
+        user_permanent_residence=#{vo.permanentResidence},
+      </if>
+      <if test='vo.birthday!=null'>
+        user_birth=#{vo.birthday},
+      </if>
+      <if test='vo.describe!=null'>
+        user_text=#{vo.describe},
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectAllByIds" resultMap="user_simple">
+    SELECT user_phone, user_name, user_avatar FROM
+    <foreach collection="vl" separator="UNION ALL" open="(" close=")" item="item">
+      SELECT #{item} AS urid
+    </foreach>
+    AS urd_tab
+    LEFT JOIN
+    usve_user ON urd_tab.urid=usve_user.user_phone
+    WHERE urd_tab.urid IN
+    <foreach collection="vl" separator="," open="(" close=")" item="phone">
+      #{phone}
+    </foreach>
+  </select>
+
+  <select id="selectFollowUserInfo" resultMap="user_simple">
+    SELECT
+      usve_user.user_phone,
+      usve_user.user_name,
+      usve_user.user_avatar
+    FROM
+      usve_follow
+      LEFT JOIN usve_user ON usve_follow.follow_back = usve_user.user_phone
+    WHERE
+      usve_follow.follow_forward = #{userId}
+  </select>
+
+  <select id="selectFansUserInfo" resultMap="user_simple">
+    SELECT
+      usve_user.user_phone,
+      usve_user.user_name,
+      usve_user.user_avatar
+    FROM
+      usve_follow
+      LEFT JOIN usve_user ON usve_follow.follow_forward = usve_user.user_phone
+    WHERE
+      usve_follow.follow_back = #{userId}
+  </select>
+
+</mapper>

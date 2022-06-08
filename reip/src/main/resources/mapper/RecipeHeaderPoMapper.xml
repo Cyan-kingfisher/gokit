@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.reip.dao.mapper.RecipeHeaderPoMapper">
+  <resultMap id="BaseResultMap" type="org.example.reip.model.po.RecipeHeaderPo">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    <result column="recipe_name" jdbcType="VARCHAR" property="recipeName"/>
+    <result column="recipe_time" jdbcType="VARCHAR" property="recipeTime"/>
+    <result column="recipe_difficulty" jdbcType="VARCHAR" property="recipeDifficulty"/>
+    <result column="recipe_lable" jdbcType="VARCHAR" property="recipeLable"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="status" jdbcType="INTEGER" property="status"/>
+    <result column="recipe_image" jdbcType="LONGVARCHAR" property="recipeImage"/>
+    <result column="recipe_describe" jdbcType="LONGVARCHAR" property="recipeDescribe"/>
+    <result column="recipe_tips" jdbcType="LONGVARCHAR" property="recipeTips"/>
+  </resultMap>
+  <resultMap id="ScreenResultMap" type="org.example.reip.model.vo.response.RecipeSimpleResponseVo">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="user_id" jdbcType="VARCHAR" property="userPhone"/>
+    <result column="recipe_name" jdbcType="VARCHAR" property="recipeName"/>
+    <result column="recipe_image" jdbcType="LONGVARCHAR" property="recipeImage"/>
+    <result column="couts" jdbcType="INTEGER" property="recipeWoksCount" />
+    <result column="recipe_lable" jdbcType="VARCHAR" property="recipeLable"/>
+  </resultMap>
+
+  <select id="selectAllRecipeWorksCount" resultType="java.lang.Integer">
+    SELECT
+      IFNULL( sul_tab.counts, 0 ) AS counts
+    FROM
+      <foreach collection="vl" separator="UNION ALL" open="(" close=")" item="item">
+        SELECT #{item} AS reci_id
+      </foreach>
+    AS sel_tab
+    LEFT JOIN
+    (
+      SELECT DISTINCT
+        rec_works.recipe_id AS wid,
+        COUNT(*) AS counts
+      FROM
+        rec_works
+      WHERE
+        rec_works.recipe_id IN
+        <foreach collection="vl" separator="," open="(" close=")" item="item">
+          #{item}
+        </foreach>
+      GROUP BY
+        rec_works.recipe_id
+    )
+    AS sul_tab
+    ON sel_tab.reci_id = sul_tab.wid
+  </select>
+
+  <select id="getSearchIds" resultType="java.lang.Integer">
+    SELECT DISTINCT rec_head.id
+    FROM rec_head
+    LEFT JOIN rce_material
+    ON rec_head.id = rce_material.recipe_id
+    WHERE rec_head.recipe_name LIKE CONCAT('%', #{search}, '%')
+    OR rec_head.recipe_describe LIKE CONCAT('%', #{search}, '%')
+    OR rec_head.recipe_lable LIKE CONCAT('%', #{search}, '%')
+    OR rce_material.material_ingredients LIKE CONCAT('%', #{search}, '%')
+  </select>
+
+  <select id="selectAllRecipeScreen" resultMap="ScreenResultMap">
+    SELECT DISTINCT
+      rec_head.id,
+      rec_head.user_id,
+      rec_head.recipe_name,
+      rec_head.recipe_image,
+      rec_head.recipe_lable,
+      orde_tab.couts,
+      rec_head.create_time
+    FROM
+      rec_head
+    INNER JOIN
+    (
+      SELECT
+        reci_id, IFNULL( sul_tab.counts, 0 ) AS couts
+      FROM
+        <foreach collection="vl" separator="UNION ALL" open="(" close=")" item="item">
+        SELECT #{item} AS reci_id
+        </foreach>
+      AS sel_tab
+      LEFT JOIN
+      (
+        SELECT DISTINCT
+          rec_works.recipe_id AS wid,
+          COUNT(*) AS counts
+        FROM
+          rec_works
+        WHERE
+          rec_works.recipe_id IN
+            <foreach collection="vl" separator="," open="(" close=")" item="item">
+              #{item}
+            </foreach>
+        GROUP BY rec_works.recipe_id
+      ) AS sul_tab
+      ON sel_tab.reci_id = sul_tab.wid
+    ) AS orde_tab ON reci_id=id
+    WHERE rec_head.`status` = 2 AND
+    rec_head.id IN
+    <foreach collection="vl" separator="," open="(" close=")" item="item">
+      #{item}
+    </foreach>
+    <if test='ord==null or ord!=1' >
+      ORDER BY rec_head.create_time DESC
+    </if>
+    <if test='ord!=null and ord==1' >
+      ORDER BY orde_tab.couts DESC
+    </if>
+  </select>
+
+</mapper>

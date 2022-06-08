@@ -1,0 +1,39 @@
+network:
+  public: 172.221.234.190
+  private: 127.0.0.1
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 8000
+spring:
+  servlet:
+    multipart:
+      max-file-size: 4096MB
+      max-request-size: 1024MB
+  redis:
+    cluster:
+      nodes:
+        - ${network.public}:7361
+        - ${network.public}:7362
+        - ${network.public}:7363
+        - ${network.public}:7364
+        - ${network.public}:7365
+        - ${network.public}:7366
+    password: 123456
+server:
+  port: 8071
+mysql:
+  version: 8.0.28
+huawei:
+  obs:
+    accessKeyId: GHJ&IY(JKSHNLQIUSQOSJ
+    secretAccessKey: KUI*(DWLSIU)(@QLQWUOP(LIUWPQO(LOSU)W(JK
+    endPoint: obs.hio8yOIHJ(*LIOKU(*Y&ITGK)La
+mybatis:
+  type-aliases-package: org.example.back.system.model.po
+  mapper-locations: classpath:mapper/*.xml
+logging:
+  level:
+    org.example.reip.dao.mapper: debug

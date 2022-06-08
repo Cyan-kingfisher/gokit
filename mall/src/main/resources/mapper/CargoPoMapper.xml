@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mall.dao.mapper.CargoPoMapper">
+  <resultMap id="BaseResultMap" type="org.example.mall.model.po.CargoPo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+    <result column="cargo_name" jdbcType="VARCHAR" property="cargoName" />
+    <result column="cargo_price" jdbcType="DECIMAL" property="cargoPrice" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="cargo_img" jdbcType="LONGVARCHAR" property="cargoImg" />
+    <result column="cargo_ship_info" jdbcType="LONGVARCHAR" property="cargoShipInfo" />
+    <result column="cargo_text" jdbcType="LONGVARCHAR" property="cargoText" />
+  </resultMap>
+  <resultMap id="BaseAllInfoMap" type="org.example.mall.model.vo.CargoCollectionVo">
+    <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+    <collection property="cargoDtos" ofType="org.example.mall.model.dto.CargoDto">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="cargo_name" jdbcType="VARCHAR" property="cargoName" />
+      <result column="cargo_price" jdbcType="DECIMAL" property="cargoPrice" />
+      <result column="cargo_img" jdbcType="LONGVARCHAR" property="cargoImg" />
+    </collection>
+  </resultMap>
+  <resultMap id="DetailInfoMap" type="org.example.mall.model.vo.CargoDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+    <result column="cargo_name" jdbcType="VARCHAR" property="cargoName" />
+    <result column="cargo_price" jdbcType="DECIMAL" property="cargoPrice" />
+    <result column="cargo_img" jdbcType="LONGVARCHAR" property="cargoImg" />
+    <result column="cargo_ship_info" jdbcType="LONGVARCHAR" property="cargoShipInfo" />
+    <result column="cargo_text" jdbcType="LONGVARCHAR" property="cargoText" />
+    <result column="cargo_son_id" jdbcType="INTEGER" property="cargoSonId" />
+    <result column="cargo_id" jdbcType="BIGINT" property="cargoId" />
+    <result column="cargo_son_name" jdbcType="VARCHAR" property="cargoSonName" />
+    <result column="cargo_son_price" jdbcType="DECIMAL" property="cargoSonPrice" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="selectAllInfo" resultMap="BaseAllInfoMap">
+    SELECT
+      mall_warehouse.warehouse_name,
+      mall_cargo_header.id,
+      mall_cargo_header.cargo_name,
+      mall_cargo_header.cargo_price,
+      mall_cargo_header.cargo_img
+    FROM
+      mall_warehouse
+        LEFT JOIN mall_cargo_header ON mall_warehouse.id = mall_cargo_header.warehouse_id
+    ORDER BY
+      mall_cargo_header.create_time DESC
+  </select>
+
+  <select id="selectDetailInfo" resultMap="DetailInfoMap">
+    SELECT
+      *
+    FROM
+      mall_cargo_header
+      LEFT JOIN mall_cargo_line ON mall_cargo_header.id = mall_cargo_line.cargo_id
+    WHERE
+        mall_cargo_header.id IN
+        <foreach collection="ids" separator="," open="(" close=")" item="item">
+          #{item}
+        </foreach>
+  </select>
+</mapper>

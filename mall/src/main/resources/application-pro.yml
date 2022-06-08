@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    slave:
+      jdbc-url: jdbc:mysql://172.221.234.190:3307/mall?serverTimezone=UTC&characterEncoding=utf8
+      username: mall
+      password: malltanqin
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        pool-name: HikariCP
+        auto-commit: false
+    master:
+      jdbc-url: jdbc:mysql://172.221.234.190:3306/mall?serverTimezone=UTC&characterEncoding=utf8
+      username: mall
+      password: malltanqin
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        pool-name: HikariCP
+        auto-commit: false

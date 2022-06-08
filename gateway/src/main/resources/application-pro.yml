@@ -1,0 +1,7 @@
+config:
+  info:
+    nacos-address: 172.221.234.190:8848
+    nacos-namespace: 431265fd-95d5-4d18-852a-237035b1ad83
+    nacos-data-id: gateway-router
+    nacos-group: DEFAULT_GROUP
+    nacos-timeout: 30000

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "api-usve",
+    "order": 0,
+    "predicates": [
+      {
+        "args": {
+          "pattern": "/api/usve/**"
+        },
+        "name": "Path"
+      }
+    ],
+    "filters": [
+      {
+        "name": "StripPrefix",
+        "args": {
+          "parts": 2
+        }
+      }
+    ],
+    "uri": "lb://gokit-api-usve"
+  },
+  {
+    "id": "system-background",
+    "order": 0,
+    "predicates": [
+      {
+        "args": {
+          "pattern": "/background/**"
+        },
+        "name": "Path"
+      }
+    ],
+    "filters": [
+      {
+        "name": "StripPrefix",
+        "args": {
+          "parts": 1
+        }
+      }
+    ],
+    "uri": "lb://gokit-system-background"
+  },
+  {
+    "id": "api-reip",
+    "order": 0,
+    "predicates": [
+      {
+        "args": {
+          "pattern": "/api/reip/**"
+        },
+        "name": "Path"
+      }
+    ],
+    "filters": [
+      {
+        "name": "StripPrefix",
+        "args": {
+          "parts": 2
+        }
+      }
+    ],
+    "uri": "lb://gokit-api-reip"
+  },
+  {
+    "id": "api-mall",
+    "order": 0,
+    "predicates": [
+      {
+        "args": {
+          "pattern": "/api/mall/**"
+        },
+        "name": "Path"
+      }
+    ],
+    "filters": [
+      {
+        "name": "StripPrefix",
+        "args": {
+          "parts": 2
+        }
+      }
+    ],
+    "uri": "lb://gokit-api-mall"
+  }
+]

@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: gokit-gateway
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: false
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 2150d91c-a78e-406f-9cbd-8c92056adf71
+      discovery:
+        namespace: 2150d91c-a78e-406f-9cbd-8c92056adf71
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:9090
+        port: 8719
+        clientIp: 192.168.205.12
+      eager: true
+---
+
+spring:
+  profiles: pro
+  cloud:
+    nacos:
+      server-addr: 172.221.234.190:8848
+      config:
+        server-addr: 172.221.234.190:8848
+        namespace: 431265fd-95d5-4d18-852a-237035b1ad83
+      discovery:
+        namespace: 431265fd-95d5-4d18-852a-237035b1ad83
+        server-addr: 172.221.234.190:8848

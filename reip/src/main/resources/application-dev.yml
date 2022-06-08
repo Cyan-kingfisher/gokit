@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    slave:
+      jdbc-url: jdbc:mysql://127.0.0.1:3307/recipe?serverTimezone=UTC&characterEncoding=utf8
+      username: reip
+      password: reiptanqin
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        pool-name: HikariCP
+        auto-commit: false
+    master:
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/recipe?serverTimezone=UTC&characterEncoding=utf8
+      username: reip
+      password: reiptanqin
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        pool-name: HikariCP
+        auto-commit: false

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mall.dao.mapper.ShopLinePoMapper">
+  <resultMap id="BaseResultMap" type="org.example.mall.model.po.ShopLinePo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+    <result column="cargo_id" jdbcType="BIGINT" property="cargoId" />
+    <result column="cargo_son_id" jdbcType="INTEGER" property="cargoSonId" />
+    <result column="cargo_price" jdbcType="DECIMAL" property="cargoPrice" />
+    <result column="cargo_count" jdbcType="INTEGER" property="cargoCount" />
+    <result column="shop_status" jdbcType="INTEGER" property="shopStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>
