@@ -3,10 +3,13 @@
 ---
 [![前端开发](https://img.shields.io/badge/%E9%93%BE%E6%8E%A5-%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE-ff69b4)](https://gitee.com/zhang-wenhaoyue/xiachufang?_from=gitee_search)
 ---
-![schedule](https://img.shields.io/badge/schedule-unfinished-red "schedule")
+[![Nacos](https://img.shields.io/badge/alibaba-Nacos-critical)](https://github.com/alibaba/nacos)
+[![Sentinel](https://img.shields.io/badge/alibaba-Sentinel-blue)](https://github.com/alibaba/Sentinel/)
 ![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg "license")
-![developer](https://img.shields.io/badge/developer-cyan-blueviolet "developer")
 ![build](https://img.shields.io/badge/build-maven-orange "maven")
+---
+![schedule](https://img.shields.io/badge/schedule-unfinished-ff0000 "schedule")
+![developer](https://img.shields.io/badge/developer-cyan-blueviolet "developer")
 ---
 
 ## 介绍
@@ -55,3 +58,7 @@ profiles包括dev和pro，dev为开发环境，pro为生产环境
  - 功能未完善
  - 数据库未优化索引
  - 未实现缓存
+
+---
+
+## 后续有时间会更新项目，试验自己感兴趣的一些技术
