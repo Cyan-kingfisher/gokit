@@ -1,7 +1,7 @@
 # 基于微服务的仿下厨房系统后端
 
 ---
-[![前端开发](https://img.shields.io/badge/%E9%93%BE%E6%8E%A5-%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE-ff69b4)](https://gitee.com/zhang-wenhaoyue/xiachufang?_from=gitee_search)
+[![前端开发](https://img.shields.io/badge/%E9%93%BE%E6%8E%A5-%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE-ff69b4)](https://gitee.com/zhang-wenhaoyue/xiachufang)
 ---
 [![Nacos](https://img.shields.io/badge/alibaba-Nacos-critical)](https://github.com/alibaba/nacos)
 [![Sentinel](https://img.shields.io/badge/alibaba-Sentinel-blue)](https://github.com/alibaba/Sentinel/)
