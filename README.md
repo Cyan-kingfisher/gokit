@@ -2,6 +2,7 @@
 
 ---
 [![前端开发](https://img.shields.io/badge/%E9%93%BE%E6%8E%A5-%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE-ff69b4)](https://gitee.com/zhang-wenhaoyue/xiachufang)
+[![前端开发](https://img.shields.io/badge/github%E9%93%BE%E6%8E%A5-%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE-cc33cc)](https://github.com/AftertTheRain/Xiachufang)
 ---
 [![Nacos](https://img.shields.io/badge/alibaba-Nacos-critical)](https://github.com/alibaba/nacos)
 [![Sentinel](https://img.shields.io/badge/alibaba-Sentinel-blue)](https://github.com/alibaba/Sentinel/)
@@ -19,6 +20,25 @@
 其中网关动态路由配置文件由nacos管理，其配置文件为**gateway.config.json**
 <br>
 profiles包括dev和pro，dev为开发环境，pro为生产环境
+```
+|─── pom.xml                          # maven配置文件
+|─── gateway                          # 网关
+|    │─── src                         # 源代码
+|    │─── pom.xml                     # maven配置文件
+|─── mall                             # 商城服务
+|    │─── src                         # 源代码
+|    │─── pom.xml                     # maven配置文件
+|─── reip                             # 菜谱服务
+|    │─── src                         # 源代码
+|    │─── pom.xml                     # maven配置文件
+|─── usve                             # 用户服务
+|    │─── src                         # 源代码
+|    │─── pom.xml                     # maven配置文件
+|─── system                           # 后台管理系统
+|    │─── src                         # 源代码
+|    │─── pom.xml                     # maven配置文件
+```
+
 
 ## 运行环境
 
