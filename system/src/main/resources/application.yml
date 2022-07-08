@@ -1,6 +1,3 @@
-network:
-  public: 172.221.234.190
-  private: 127.0.0.1
 feign:
   client:
     config:
@@ -12,16 +9,6 @@ spring:
     multipart:
       max-file-size: 4096MB
       max-request-size: 1024MB
-  redis:
-    cluster:
-      nodes:
-        - ${network.public}:7361
-        - ${network.public}:7362
-        - ${network.public}:7363
-        - ${network.public}:7364
-        - ${network.public}:7365
-        - ${network.public}:7366
-    password: 123456
 server:
   port: 8071
 mysql:

@@ -1,3 +1,12 @@
+local:
+  mysql:
+    ip: 192.168.120.101
+    port:
+      master: 42066
+      slave: 42067
+  redis:
+    ip: 192.168.120.101
+    pass: 123456
 spring:
   datasource:
     slave:

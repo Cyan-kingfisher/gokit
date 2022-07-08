@@ -1,21 +1,8 @@
-network:
-  public: 172.221.234.190
-  private: 127.0.0.1
 server:
   port: 8001
 mysql:
   version: 8.0.28
 spring:
-  redis:
-    cluster:
-      nodes:
-        - ${network.public}:7361
-        - ${network.public}:7362
-        - ${network.public}:7363
-        - ${network.public}:7364
-        - ${network.public}:7365
-        - ${network.public}:7366
-    password: 123456
 mybatis:
   type-aliases-package: org.example.usve.model.po
   mapper-locations: classpath:mapper/*.xml

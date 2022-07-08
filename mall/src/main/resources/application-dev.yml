@@ -1,7 +1,16 @@
+local:
+  mysql:
+    ip: 192.168.120.101
+    port:
+      master: 42066
+      slave: 42067
+  redis:
+    ip: 192.168.120.101
+    pass: 123456
 spring:
   datasource:
     slave:
-      jdbc-url: jdbc:mysql://127.0.0.1:3307/mall?serverTimezone=UTC&characterEncoding=utf8
+      jdbc-url: jdbc:mysql://${local.mysql.ip}:${local.mysql.port.slave}/mall?serverTimezone=UTC&characterEncoding=utf8
       username: mall
       password: malltanqin
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -9,10 +18,20 @@ spring:
         pool-name: HikariCP
         auto-commit: false
     master:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/mall?serverTimezone=UTC&characterEncoding=utf8
+      jdbc-url: jdbc:mysql://${local.mysql.ip}:${local.mysql.port.master}/mall?serverTimezone=UTC&characterEncoding=utf8
       username: mall
       password: malltanqin
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
         pool-name: HikariCP
         auto-commit: false
+  redis:
+    cluster:
+      nodes:
+        - ${local.redis.ip}:7361
+        - ${local.redis.ip}:7362
+        - ${local.redis.ip}:7363
+        - ${local.redis.ip}:7364
+        - ${local.redis.ip}:7365
+        - ${local.redis.ip}:7366
+    password: ${local.redis.pass}
