@@ -10,10 +10,10 @@ spring:
   profiles: dev
   cloud:
     nacos:
-      server-addr: 192.168.120.101:8848,192.168.120.101:8849,192.168.120.101:8850
+      server-addr: 192.168.120.101:8848
       discovery:
-        namespace: 2150d91c-a78e-406f-9cbd-8c92056adf71
-        server-addr: 192.168.120.101:8848,192.168.120.101:8849,192.168.120.101:8850
+        namespace: 8a1cad62-3e0b-452d-8010-d963704fb1ac
+        server-addr: 192.168.120.101:8848
 
 ---
 

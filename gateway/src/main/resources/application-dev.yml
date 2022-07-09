@@ -1,7 +1,7 @@
 config:
   info:
-    nacos-address: 192.168.120.101:8848,192.168.120.101:8849,192.168.120.101:8850
-    nacos-namespace: 2150d91c-a78e-406f-9cbd-8c92056adf71
+    nacos-address: 192.168.120.101:8848
+    nacos-namespace: 8a1cad62-3e0b-452d-8010-d963704fb1ac
     nacos-data-id: gateway-router
     nacos-group: DEFAULT_GROUP
     nacos-timeout: 30000
