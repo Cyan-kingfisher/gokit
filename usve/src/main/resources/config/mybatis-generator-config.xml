@@ -58,7 +58,7 @@
         <!-- table可以有多个,每个数据库中的表都可以写一个table，tableName表示要匹配的数据库表,
         domainObjectName表示数据库表对应的java类名，也可以在tableName属性中通过使用%通配符来
         匹配所有数据库表,只有匹配的表才会自动生成文件 -->
-        <table schema="" tableName="usve_receive_address" domainObjectName="ReceiveAddressPo">
+        <table schema="" tableName="usve_special_user" domainObjectName="SpecialUserPo">
             <!-- 默认false, 设置true生成的sql表不会包含schema和catalog前缀-->
             <property name="ignoreQualifiersAtRuntime" value="true"/>
             <!-- 字段指定java类型-->
