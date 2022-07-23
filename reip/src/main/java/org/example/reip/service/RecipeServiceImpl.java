@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -64,9 +65,6 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Autowired
     private UserService userService;
-
-    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 5, 2, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
-
 
     @Override
     public RecipeUpVo insertRecipe(String token, RecipeRequestVo vo) {
@@ -161,23 +159,24 @@ public class RecipeServiceImpl implements RecipeService {
 
         List<String> userIds = simpleRecipe.stream().map(RecipeSimpleResponseVo::getUserPhone).collect(Collectors.toList());
         StringRequestVo requestVo = new StringRequestVo(userIds);
-        List<UserDto> userSimples = userService.getUserList(requestVo);
-
-        boolean status = userSimples.size() == simpleRecipe.size();
-        AssertUtil.isTure(status, HttpCodeEnum.SEARCH_RECIPE);
-
-        for (int i = 0; i < userSimples.size(); i++) {
-            int index = i;
-            threadPoolExecutor.execute(
-                    () -> {
-                        RecipeSimpleResponseVo simpleResponseVo = simpleRecipe.get(index);
-                        simpleResponseVo.setRecipeLables(Arrays.asList(simpleResponseVo.getRecipeLable().split(",")));
-                        simpleResponseVo.setUserAvatar(userSimples.get(index).getUserAvatar());
-                        simpleResponseVo.setUserName(userSimples.get(index).getUserName());
+        CompletableFuture<List<UserDto>> completableFuture = userService.getUserList(requestVo);
+        completableFuture.thenAccept(
+                userSimples -> {
+                    boolean status = userSimples.size() == simpleRecipe.size();
+                    AssertUtil.isTure(status, HttpCodeEnum.SEARCH_RECIPE);
+                    for (int i = 0; i < userSimples.size(); i++) {
+                        int index = i;
+                        CompletableFuture.runAsync(
+                                () -> {
+                                    RecipeSimpleResponseVo simpleResponseVo = simpleRecipe.get(index);
+                                    simpleResponseVo.setRecipeLables(Arrays.asList(simpleResponseVo.getRecipeLable().split(",")));
+                                    simpleResponseVo.setUserAvatar(userSimples.get(index).getUserAvatar());
+                                    simpleResponseVo.setUserName(userSimples.get(index).getUserName());
+                                }
+                        );
                     }
-            );
-        }
-
+                }
+        );
         return result;
     }
 
