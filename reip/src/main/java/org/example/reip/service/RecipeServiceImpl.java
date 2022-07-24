@@ -33,9 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -73,11 +70,12 @@ public class RecipeServiceImpl implements RecipeService {
         String userId = JwtUtil.getCurrentUser(token);
         validator(userId, vo);
         int stepSize = vo.getPracticeText().size();
-        String[] stepImg = new String[stepSize];
-        String recipeImg = nativeFileUpUtil.getImage(vo.getRecipeImage());
+
+        List<CompletableFuture<String>> stepImgFutureList = new ArrayList<>(stepSize);
+        CompletableFuture<String> recipeImgFuture = nativeFileUpUtil.getImage(vo.getRecipeImage());
         List<MultipartFile> stepMedia = vo.getPracticeMedia();
         for (int i = 0; i < stepSize; i++) {
-            stepImg[i] = nativeFileUpUtil.getImage(stepMedia.get(i));
+            stepImgFutureList.add(nativeFileUpUtil.getImage(stepMedia.get(i)));
         }
 
         Integer recipeId = SnowIdUtil.getNextId();
@@ -112,10 +110,12 @@ public class RecipeServiceImpl implements RecipeService {
             }
         }
 
+        String recipeImg = recipeImgFuture.join();
         RecipeHeaderPo headerPo = RecipeHeaderPo.builder().id(recipeId).recipeLable(vo.getRecipeLable()).recipeName(vo.getRecipeName()).recipeDescribe(vo.getRecipeDescribe())
                 .recipeTips(vo.getRecipeTips()).recipeTime(vo.getRecipeTime()).recipeDifficulty(vo.getRecipeDifficulty()).recipeImage(recipeImg).userId(userId).status(RecipeStatus.AUDIT.getCode()).build();
         recipeHeaderPoMapper.insertSelective(headerPo);
 
+        String[] stepImg = stepImgFutureList.stream().map(CompletableFuture::join).toArray(String[]::new);
         List<RecipeStepDto> stepResult = new ArrayList<>();
         List<String> practiceText = vo.getPracticeText();
         for (int i = 0; i < stepSize; i++) {

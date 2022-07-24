@@ -1,14 +1,16 @@
 package org.example.reip.service;
 
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 /**
  * @author cyan
- * @since 2022/7/23
+ * @since 2022/7/24
  */
 public interface FileUpService {
 
-    public String getImage(MultipartFile file);
+    public CompletableFuture<String> getImage(MultipartFile file);
 
 }

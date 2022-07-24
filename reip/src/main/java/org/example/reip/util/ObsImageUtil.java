@@ -6,10 +6,13 @@ import com.obs.services.model.PutObjectRequest;
 import org.example.reip.service.FileUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 /**
  * @author cyan
@@ -27,7 +30,7 @@ public class ObsImageUtil implements FileUpService {
 
     @Async
     @Override
-    public String getImage(MultipartFile file) {
+    public CompletableFuture<String> getImage(MultipartFile file) {
         String url = null;
         try {
             String originName = file.getOriginalFilename();
@@ -42,7 +45,7 @@ public class ObsImageUtil implements FileUpService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return url;
+        return CompletableFuture.completedFuture(url);
     }
 
 }

@@ -1,11 +1,13 @@
 package org.example.reip.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.example.reip.config.FileInfo;
 import org.example.reip.config.FileUpConfig;
 import org.example.reip.service.FileUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 /**
  * @author cyan
@@ -26,12 +30,14 @@ public class NativeFileUpUtil implements FileUpService {
     public FileInfo fileInfo;
     
     @Override
-    public String getImage(MultipartFile file) {
+    @Async
+    public CompletableFuture<String> getImage(MultipartFile file) {
         log.info("thread-name: " + Thread.currentThread().getName());
-
         String oriName = String.valueOf(Objects.requireNonNull(file.getOriginalFilename()));
-        log.info("origin name: {}, houzhui: {}", oriName, oriName.substring(oriName.lastIndexOf('.')));
-        String savePath = oriName;
+        StringBuffer builder = new StringBuffer();
+        builder.append("gokit-").append(RandomStringUtils.randomAlphabetic(6)).append(oriName.substring(oriName.lastIndexOf('.')));
+        String savePath = builder.toString();
+        log.info("file name: {}", savePath);
         File fileIO = new File(fileInfo.getFilePath() + savePath + "/");
 
         if (!fileIO.exists()) {
@@ -45,7 +51,7 @@ public class NativeFileUpUtil implements FileUpService {
         }
         String result = fileInfo.getLocal() + fileInfo.getUrl() + savePath;
         log.info("url: " + result);
-        return result;
+        return CompletableFuture.completedFuture(result);
 
     }
 }

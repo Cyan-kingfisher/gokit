@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * 菜谱API
@@ -82,13 +85,13 @@ public class RecipeController {
 
     @PostMapping(value = "/test", headers = "content-type=multipart/form-data")
     public Result upFile(List<MultipartFile> file) {
-        List<String> ars = new ArrayList<>(file.size());
+        List<CompletableFuture<String>> ars = new ArrayList<>(file.size());
         for (MultipartFile ii: file) {
-            String temp = nativeFileUpUtil.getImage(ii);
-            ars.add(temp);
+            ars.add(nativeFileUpUtil.getImage(ii));
         }
-        log.info("ars: {}", ars);
-        return Result.success();
+        List<String> result = ars.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        log.info("ars: {}", result);
+        return Result.success(result);
     }
 
 }
