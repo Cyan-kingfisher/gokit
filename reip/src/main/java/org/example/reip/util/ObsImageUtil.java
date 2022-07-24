@@ -3,6 +3,7 @@ package org.example.reip.util;
 import com.obs.services.ObsClient;
 import com.obs.services.model.AccessControlList;
 import com.obs.services.model.PutObjectRequest;
+import org.example.reip.service.FileUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ import java.util.UUID;
  * @since 2022/4/14
  */
 @Component
-public class ObsImageUtil {
+public class ObsImageUtil implements FileUpService {
 
     private static final String bucket = "gokit";
     private static final int expire = 1665423265;
@@ -25,6 +26,7 @@ public class ObsImageUtil {
     private ObsClient obsClient;
 
     @Async
+    @Override
     public String getImage(MultipartFile file) {
         String url = null;
         try {

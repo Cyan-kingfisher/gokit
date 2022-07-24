@@ -27,6 +27,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.util.StringUtil;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,8 +46,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RecipeServiceImpl implements RecipeService {
 
-    @Autowired
-    private ObsImageUtil obsImageUtil;
+    @Resource
+    private FileUpService nativeFileUpUtil;
 
     @Autowired
     private RecipeHeaderPoMapper recipeHeaderPoMapper;
@@ -73,10 +74,10 @@ public class RecipeServiceImpl implements RecipeService {
         validator(userId, vo);
         int stepSize = vo.getPracticeText().size();
         String[] stepImg = new String[stepSize];
-        String recipeImg = obsImageUtil.getImage(vo.getRecipeImage());
+        String recipeImg = nativeFileUpUtil.getImage(vo.getRecipeImage());
         List<MultipartFile> stepMedia = vo.getPracticeMedia();
         for (int i = 0; i < stepSize; i++) {
-            stepImg[i] = obsImageUtil.getImage(stepMedia.get(i));
+            stepImg[i] = nativeFileUpUtil.getImage(stepMedia.get(i));
         }
 
         Integer recipeId = SnowIdUtil.getNextId();

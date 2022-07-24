@@ -11,6 +11,9 @@ spring:
   cloud:
     nacos:
       server-addr: 192.168.120.101:8848
+      config:
+        server-addr: 192.168.120.101:8848
+        namespace: 8a1cad62-3e0b-452d-8010-d963704fb1ac
       discovery:
         namespace: 8a1cad62-3e0b-452d-8010-d963704fb1ac
         server-addr: 192.168.120.101:8848

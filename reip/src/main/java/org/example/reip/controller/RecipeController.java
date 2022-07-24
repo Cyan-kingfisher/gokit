@@ -9,6 +9,7 @@ import org.example.reip.model.vo.RecipeSourceVo;
 import org.example.reip.model.vo.RecipeUpVo;
 import org.example.reip.model.vo.request.RecipeRequestVo;
 import org.example.reip.model.vo.request.RecipeSearchRequestVo;
+import org.example.reip.service.FileUpService;
 import org.example.reip.service.RecipeService;
 import org.example.reip.util.AssertUtil;
 import org.example.reip.util.ObsImageUtil;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,14 +77,14 @@ public class RecipeController {
         return Result.success();
     }
 
-    @Autowired
-    ObsImageUtil obsImageUtil;
+    @Resource
+    private FileUpService nativeFileUpUtil;
 
     @PostMapping(value = "/test", headers = "content-type=multipart/form-data")
     public Result upFile(List<MultipartFile> file) {
         List<String> ars = new ArrayList<>(file.size());
         for (MultipartFile ii: file) {
-            String temp = obsImageUtil.getImage(ii);
+            String temp = nativeFileUpUtil.getImage(ii);
             ars.add(temp);
         }
         log.info("ars: {}", ars);
