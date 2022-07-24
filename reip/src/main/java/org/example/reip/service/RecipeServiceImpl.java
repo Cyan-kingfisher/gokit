@@ -111,8 +111,10 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         String recipeImg = recipeImgFuture.join();
+
+        // 菜谱已审核，可修改参数status为审核状态
         RecipeHeaderPo headerPo = RecipeHeaderPo.builder().id(recipeId).recipeLable(vo.getRecipeLable()).recipeName(vo.getRecipeName()).recipeDescribe(vo.getRecipeDescribe())
-                .recipeTips(vo.getRecipeTips()).recipeTime(vo.getRecipeTime()).recipeDifficulty(vo.getRecipeDifficulty()).recipeImage(recipeImg).userId(userId).status(RecipeStatus.AUDIT.getCode()).build();
+                .recipeTips(vo.getRecipeTips()).recipeTime(vo.getRecipeTime()).recipeDifficulty(vo.getRecipeDifficulty()).recipeImage(recipeImg).userId(userId).status(RecipeStatus.RELEASE.getCode()).build();
         recipeHeaderPoMapper.insertSelective(headerPo);
 
         String[] stepImg = stepImgFutureList.stream().map(CompletableFuture::join).toArray(String[]::new);

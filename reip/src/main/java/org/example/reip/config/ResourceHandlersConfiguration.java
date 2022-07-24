@@ -19,24 +19,6 @@ public class ResourceHandlersConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        log.error("-------------------------------------------");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.info("FILE_INFO: {}", fileInfo);
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("                    ----");
-        log.error("-------------------------------------------");
         registry.addResourceHandler(fileInfo.getUrl() + "**")
                 .addResourceLocations("file:" + fileInfo.getFilePath());
     }
