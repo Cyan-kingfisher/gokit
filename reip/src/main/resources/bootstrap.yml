@@ -17,7 +17,6 @@ spring:
       discovery:
         namespace: 8a1cad62-3e0b-452d-8010-d963704fb1ac
         server-addr: 127.0.0.1:8848
-        ip: 192.168.1.2
 
 ---
 

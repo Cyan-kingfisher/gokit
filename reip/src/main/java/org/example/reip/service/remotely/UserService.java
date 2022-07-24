@@ -15,8 +15,7 @@ import java.util.concurrent.CompletableFuture;
  * @since 2022/4/16
  */
 @FeignClient("gokit-api-usve")
-@Async
 public interface UserService {
     @PostMapping("/user/query/ids")
-    CompletableFuture<List<UserDto>> getUserList(@RequestBody StringRequestVo vo) ;
+    List<UserDto> getUserList(@RequestBody StringRequestVo vo) ;
 }

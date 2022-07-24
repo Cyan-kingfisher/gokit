@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 /**
@@ -143,7 +144,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public PageInfo<RecipeSimpleResponseVo> selectRecipeScreen(RecipeSearchRequestVo vo) {
 
-        AssertUtil.isTure(vo.getPageSize()>=0, HttpCodeEnum.PAGEHELPER_ERROR);
+        AssertUtil.isTure(vo.getPageSize() >= 0, HttpCodeEnum.PAGEHELPER_ERROR);
 
         String searchKey0 = Optional.ofNullable(vo.getName()).orElse("");
         String searchKey1 = Optional.ofNullable(vo.getArgs()).orElse("");
@@ -156,30 +157,34 @@ public class RecipeServiceImpl implements RecipeService {
             return null;
         }
 
-        PageHelper.startPage(vo.getPageNum(), vo.getPageSize(),true,true,true);
+        PageHelper.startPage(vo.getPageNum(), vo.getPageSize(), true, true, true);
         List<RecipeSimpleResponseVo> simpleRecipe = recipeHeaderPoMapper.selectAllRecipeScreen(recipeIds, vo.getOrder());
         PageInfo<RecipeSimpleResponseVo> result = new PageInfo<>(simpleRecipe);
 
         List<String> userIds = simpleRecipe.stream().map(RecipeSimpleResponseVo::getUserPhone).collect(Collectors.toList());
         StringRequestVo requestVo = new StringRequestVo(userIds);
-        CompletableFuture<List<UserDto>> completableFuture = userService.getUserList(requestVo);
-        completableFuture.thenAccept(
-                userSimples -> {
-                    boolean status = userSimples.size() == simpleRecipe.size();
-                    AssertUtil.isTure(status, HttpCodeEnum.SEARCH_RECIPE);
-                    for (int i = 0; i < userSimples.size(); i++) {
-                        int index = i;
-                        CompletableFuture.runAsync(
-                                () -> {
-                                    RecipeSimpleResponseVo simpleResponseVo = simpleRecipe.get(index);
-                                    simpleResponseVo.setRecipeLables(Arrays.asList(simpleResponseVo.getRecipeLable().split(",")));
-                                    simpleResponseVo.setUserAvatar(userSimples.get(index).getUserAvatar());
-                                    simpleResponseVo.setUserName(userSimples.get(index).getUserName());
-                                }
-                        );
+        List<UserDto> userSimples = userService.getUserList(requestVo);
+        log.info("User List: {}", userSimples);
+        boolean status = userSimples.size() == simpleRecipe.size();
+        AssertUtil.isTure(status, HttpCodeEnum.SEARCH_RECIPE);
+        CountDownLatch latch = new CountDownLatch(userSimples.size());
+        for (int i = 0; i < userSimples.size(); i++) {
+            int index = i;
+            CompletableFuture.runAsync(
+                    () -> {
+                        RecipeSimpleResponseVo simpleResponseVo = simpleRecipe.get(index);
+                        simpleResponseVo.setRecipeLables(Arrays.asList(simpleResponseVo.getRecipeLable().split(",")));
+                        simpleResponseVo.setUserAvatar(userSimples.get(index).getUserAvatar());
+                        simpleResponseVo.setUserName(userSimples.get(index).getUserName());
+                        latch.countDown();
                     }
-                }
-        );
+            );
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -208,7 +213,7 @@ public class RecipeServiceImpl implements RecipeService {
         if (GoKitUtil.isNotNullForList(vo.getPracticeMedia(), vo.getPracticeText())) {
             AssertUtil.isTure(vo.getPracticeMedia().size() == vo.getPracticeText().size(), HttpCodeEnum.ARGS_ARRAY_ALIGNMENT);
         }
-        AssertUtil.isTure(vo.getPracticeText().size() <=20 && vo.getPracticeText().size() >=1, HttpCodeEnum.RECIPE_UP_STEP_COUNT);
+        AssertUtil.isTure(vo.getPracticeText().size() <= 20 && vo.getPracticeText().size() >= 1, HttpCodeEnum.RECIPE_UP_STEP_COUNT);
         // 厨具为空
         if (GoKitUtil.isNotNullForList(vo.getUtensilBrand(), vo.getUtensilModel(), vo.getUtensilType())) {
             AssertUtil.isTure(vo.getUtensilBrand().size() == vo.getUtensilModel().size() && vo.getUtensilModel().size() == vo.getUtensilType().size(), HttpCodeEnum.ARGS_ARRAY_ALIGNMENT);
